@@ -3,7 +3,7 @@ import SparseInverseProblems: lmo, phi, solveFiniteDimProblem, localDescent,
 getStartingPoint, parameterBounds, computeGradient
 using SparseInverseProblems.Util
 
-immutable GaussBlur2D <: BoxConstrainedDifferentiableModel
+struct GaussBlur2D <: BoxConstrainedDifferentiableModel
   sigma :: Float64
   n_pixels :: Int64
   grid :: Vector{Float64} #this is small now.

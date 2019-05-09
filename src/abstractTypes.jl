@@ -1,6 +1,6 @@
 export ForwardModel, Loss, phi, localDescent, solveFiniteDimProblem, lmo, loss
-abstract ForwardModel
-abstract Loss
+abstract type ForwardModel end
+abstract type Loss end
 # Computes the forward operator.
 # Inputs:
 #   parameters:: p by k matrix. You might want a generic list instead if the parameter space is more complex.

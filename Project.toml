@@ -1,0 +1,9 @@
+name = "SparseInverseProblems"
+uuid = "d936124a-72a4-11e9-20e8-25c46f4088b2"
+authors = ["nboyd"]
+version = "0.1.0"
+
+[deps]
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+NLopt = "76087f3c-5699-56af-9a33-bf431cd00edd"
+SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"

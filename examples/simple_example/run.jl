@@ -1,12 +1,13 @@
 include("simple_example.jl")
-using Gadfly, Compose
+using Compose
 evaluation_points = -5.0:0.25:5.0
 model = SimpleExample(evaluation_points, -10.0:0.5:10.0)
 means = [-2.0,1.0,3.5]
 k = length(means)
 weights = ones(k)+randn(k)*0.1
 weights[1] = 0.2
-target = max(phi(model,means',weights) + randn(length(evaluation_points))*0.1,0.0);
+target = max.(phi(model,Matrix(means'),weights) + randn(length(evaluation_points))*0.1,0.0);
+
 
 function callback(old_thetas,thetas, weights,output,old_obj_val)
   #evalute current OV
@@ -20,8 +21,10 @@ end
 
 (means_est,weights_est) = ADCG(model, LSLoss(), target,10000.0;  callback=callback)
 
+using PyPlot
+pygui(true)
 #draw the observations alone
-draw(SVG("observations.svg", 5inch, 2inch), plot(x=evaluation_points,y=target))
+plot(evaluation_points, target)
 
 #draw the observations with the locations and weights of the true blurs
 anno = Guide.annotation(

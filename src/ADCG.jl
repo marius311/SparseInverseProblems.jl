@@ -6,7 +6,7 @@ function ADCG(sim :: ForwardModel, lossFn :: Loss, y :: Vector{Float64}, tau :: 
   min_optimality_gap :: Float64 = 1E-5,
   max_cd_iters :: Int64 = 200,
   fully_corrective :: Bool = false)
-  assert(tau > 0.0)
+  @assert(tau > 0.0)
   bound = -Inf
   thetas = zeros(0,0) #hack
   weights = zeros(0)
@@ -23,7 +23,7 @@ function ADCG(sim :: ForwardModel, lossFn :: Loss, y :: Vector{Float64}, tau :: 
     #update the lower bound on the optimal value
     bound = max(bound, objective_value+score*tau-dot(output,grad))
     #check if the bound is met.
-    if(objective_value < bound + min_optimality_gap || score >= 0.0)
+    if (objective_value < bound + min_optimality_gap || score >= 0.0)
       return thetas,weights
     end
     #update the support
@@ -56,7 +56,7 @@ function localUpdate(sim :: ForwardModel,lossFn :: Loss,
     #local minimization over the support
     new_thetas = localDescent(sim, lossFn, thetas,weights, y)
     #break if termination condition is met
-    if length(thetas) == length(new_thetas) && maximum(abs(vec(thetas)-vec(new_thetas))) <= 1E-7
+    if length(thetas) == length(new_thetas) && maximum(abs.(vec(thetas)-vec(new_thetas))) <= 1E-7
         break
     end
     thetas = new_thetas

@@ -8,7 +8,7 @@ const min_r = 1E-3
 const max_r = 0.999
 const max_x = 1.0
 const max_b = 1.0
-immutable LinearSysID <: BoxConstrainedDifferentiableModel
+struct LinearSysID <: BoxConstrainedDifferentiableModel
   u :: Vector{Float64}  #u is the input time series
   grid
   normalization :: Function # (r,theta) -> n(r,theta)

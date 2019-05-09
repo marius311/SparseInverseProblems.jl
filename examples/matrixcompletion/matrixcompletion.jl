@@ -2,7 +2,7 @@ using SparseInverseProblems
 import SparseInverseProblems: lmo, phi, solveFiniteDimProblem, localDescent
 using SparseInverseProblems.Util
 
-immutable MatrixCompletion <: ForwardModel
+struct MatrixCompletion <: ForwardModel
   m :: Int64
   k :: Int64
   nnz :: Int64

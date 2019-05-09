@@ -1,14 +1,16 @@
 export nnlasso_kernel, lasso_kernel, nnlasso
+using SparseArrays
+using LinearAlgebra
 
 function nnlasso(A,y,tau; x :: Vector{Float64} = tau*rand(size(A,2))/(size(A,2)*2), l = ones(size(A,2)+1)/(2*size(A,2)))
-  K = full(A'*A);
-  b = full(A'*y);
+  K = Array(A'*A);
+  b = Array(A'*y);
   return nnlasso_kernel(K,b,tau)
 end
 
 function nnlasso_kernel(K,b,tau; x :: Vector{Float64} = tau*rand(length(b))/(length(b)*2), l = ones(length(b)+1)/(2*length(b)))
-  K = full(K)
-  b = full(b)
+  K = Array(K)
+  b = Array(b)
   n = size(K,2)
   if (n == 0)
     return zeros(0)
@@ -17,15 +19,15 @@ function nnlasso_kernel(K,b,tau; x :: Vector{Float64} = tau*rand(length(b))/(len
   function f_g_h(x)
     0.5*dot(x,K*x) - dot(x,b) ,K*x -b,K
   end
-  p = OptimizationProblem(n,n+1,f_g_h,[-eye(n); ones(1,n)], [zeros(n);tau])
+  p = OptimizationProblem(n,n+1,f_g_h,[-I; ones(1,n)], [zeros(n);tau])
   x,l = primalDualSolve(p :: OptimizationProblem, x, l, 10.0, 1e-12 , 1e-12 ,1000, 0.1 , 0.4)
-  x[x.<1e-9] = 0.0
+  x[x.<1e-9] .= 0.0
   return x
 end
 
 function lasso_kernel(K,b,tau; x :: Vector{Float64} = tau*rand(length(b))/(length(b)*2), l = ones(2*length(b)+1)/(2*length(b)))
-  K = full(K)
-  b = full(b)
+  K = Array(K)
+  b = Array(b)
   n = size(K,2)
   if ( n == 0)
     return zeros(0)
